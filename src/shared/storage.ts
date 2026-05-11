@@ -1,8 +1,8 @@
-import { AppState, Rule, EmailSettings } from './types';
+import { AppState, Rule } from './types';
 
 const defaultState: AppState = {
   rules: [],
-  emailSettings: null,
+  toEmail: '',
 };
 
 export const Storage = {
@@ -32,9 +32,9 @@ export const Storage = {
     await this.set(state);
   },
 
-  async saveEmailSettings(settings: EmailSettings): Promise<void> {
+  async saveEmail(email: string): Promise<void> {
     const state = await this.get();
-    state.emailSettings = settings;
+    state.toEmail = email;
     await this.set(state);
   }
 };

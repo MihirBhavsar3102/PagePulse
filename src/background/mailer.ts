@@ -1,20 +1,26 @@
 import { Storage } from '../shared/storage';
 import { Rule } from '../shared/types';
+import { EMAILJS_CONFIG } from '../shared/config';
 
 export const sendAlert = async (rule: Rule, valueFound: string | null) => {
   const state = await Storage.get();
-  const settings = state.emailSettings;
-  if (!settings || !settings.serviceId || !settings.templateId || !settings.publicKey) {
-    console.error('Email settings incomplete. Cannot send alert.');
+  
+  if (!state.toEmail) {
+    console.error('Destination email not configured. Cannot send alert.');
+    return;
+  }
+
+  if (EMAILJS_CONFIG.SERVICE_ID === 'YOUR_SERVICE_ID') {
+    console.warn('EmailJS config is not set. Check src/shared/config.ts');
     return;
   }
 
   const data = {
-    service_id: settings.serviceId,
-    template_id: settings.templateId,
-    user_id: settings.publicKey,
+    service_id: EMAILJS_CONFIG.SERVICE_ID,
+    template_id: EMAILJS_CONFIG.TEMPLATE_ID,
+    user_id: EMAILJS_CONFIG.PUBLIC_KEY,
     template_params: {
-      to_email: settings.toEmail,
+      to_email: state.toEmail,
       rule_name: rule.name,
       url: rule.url,
       detected_value: valueFound || 'N/A',

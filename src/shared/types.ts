@@ -12,14 +12,7 @@ export interface Rule {
   lastValue?: string | null;
 }
 
-export interface EmailSettings {
-  serviceId: string;
-  templateId: string;
-  publicKey: string;
-  toEmail: string;
-}
-
 export interface AppState {
   rules: Rule[];
-  emailSettings: EmailSettings | null;
+  toEmail: string;
 }
